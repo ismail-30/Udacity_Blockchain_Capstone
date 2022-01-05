@@ -20,9 +20,14 @@ contract('TestSquareVerifier', accounts => {
 
         it('should verify true with the correct proof', async function () {
             let result = await this.contract.verifyTx.call(
-                zokratesProof.proof.a,
-                zokratesProof.proof.b,
-                zokratesProof.proof.c,
+                zokratesProof.proof.A,
+                zokratesProof.proof.A_p,
+                zokratesProof.proof.B,
+                zokratesProof.proof.B_p,
+                zokratesProof.proof.C,
+                zokratesProof.proof.C_p,
+                zokratesProof.proof.H,
+                zokratesProof.proof.K,
                 zokratesProof.inputs,
                 { from: account_1 }
             );
@@ -34,9 +39,14 @@ contract('TestSquareVerifier', accounts => {
         it('should verify false with the incorrect proof', async function () {
             let inputs = [10, 2]
             let result = await this.contract.verifyTx.call(
-                zokratesProof.proof.a,
-                zokratesProof.proof.b,
-                zokratesProof.proof.c,
+                zokratesProof.proof.A,
+                zokratesProof.proof.A_p,
+                zokratesProof.proof.B,
+                zokratesProof.proof.B_p,
+                zokratesProof.proof.C,
+                zokratesProof.proof.C_p,
+                zokratesProof.proof.H,
+                zokratesProof.proof.K,
                 inputs,
                 { from: account_1 }
             );

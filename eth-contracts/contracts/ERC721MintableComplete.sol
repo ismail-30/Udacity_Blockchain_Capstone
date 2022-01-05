@@ -1,9 +1,9 @@
 pragma solidity ^0.5.0;
 
-import 'openzeppelin-solidity/contracts/utils/Address.sol';
-import 'openzeppelin-solidity/contracts/drafts/Counters.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
-import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
+import "openzeppelin-solidity/contracts/utils/Address.sol";
+import "openzeppelin-solidity/contracts/drafts/Counters.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol";
 import "./Oraclize.sol";
 
 contract Ownable {
@@ -481,12 +481,12 @@ contract ERC721Enumerable is ERC165, ERC721 {
 contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     
     // TODO: Create private vars for token _name, _symbol, and _baseTokenURI (string)
-    string private _name;
-    string private _symbol;
-    string private _baseTokenURI;
+    string private name;
+    string private symbol;
+    string private baseTokenURI;
 
     // TODO: create private mapping of tokenId's to token uri's called '_tokenURIs'
-    mapping(uint256 => string) private _tokenURIs;
+    mapping(uint256 => string) private tokenURIs;
 
     bytes4 private constant _INTERFACE_ID_ERC721_METADATA = 0x5b5e139f;
     /*
@@ -497,11 +497,11 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
      */
 
 
-    constructor (string memory name, string memory symbol, string memory baseTokenURI) public {
+    constructor (string memory _name, string memory _symbol, string memory _baseTokenURI) public {
         // TODO: set instance var values
-        _name = name;
-        _symbol = symbol;
-        _baseTokenURI = baseTokenURI;
+        name = _name;
+        symbol = _symbol;
+        baseTokenURI = _baseTokenURI;
 
         _registerInterface(_INTERFACE_ID_ERC721_METADATA);
     }
@@ -509,20 +509,20 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     // TODO: create external getter functions for name, symbol, and baseTokenURI
 
     function name() external view returns (string memory) {
-        return _name;
+        return name;
     }
 
     function symbol() external view returns (string memory) {
-        return _symbol;
+        return symbol;
     }
 
     function baseTokenURI() external view returns (string memory) {
-        return _baseTokenURI;
+        return baseTokenURI;
     }
 
     function tokenURI(uint256 tokenId) external view returns (string memory) {
         require(_exists(tokenId));
-        return _tokenURIs[tokenId];
+        return tokenURIs[tokenId];
     }
 
 
@@ -534,8 +534,8 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
     // require the token exists before setting
     function setTokenURI(uint256 tokenId) internal {
         require(_exists(tokenId), "This token does not exist");
-        string tokenURI = strConcat(_baseTokenURI, uint2str(tokenId));
-        _tokenURIs[tokenId] = tokenURI;
+        string _tokenURI = strConcat(_baseTokenURI, uint2str(tokenId));
+        tokenURIs[tokenId] = _tokenURI;
     }
 
 }

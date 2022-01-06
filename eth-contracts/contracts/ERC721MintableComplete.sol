@@ -126,16 +126,16 @@ contract ERC721 is Pausable, ERC165 {
     bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
     // Mapping from token ID to owner
-    mapping (uint256 => address) private tokenOwner;
+    mapping (uint256 => address) private _tokenOwner;
 
     // Mapping from token ID to approved address
-    mapping (uint256 => address) private tokenApprovals;
+    mapping (uint256 => address) private _tokenApprovals;
 
     // Mapping from owner to number of owned token
     // IMPORTANT: this mapping uses Counters lib which is used to protect overflow when incrementing/decrementing a uint
     // use the following functions when interacting with Counters: increment(), decrement(), and current() to get the value
     // see: https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/drafts/Counters.sol
-    mapping (address => Counters.Counter) private ownedTokensCount;
+    mapping (address => Counters.Counter) private _ownedTokensCount;
 
     // Mapping from owner to operator approvals
     mapping (address => mapping (address => bool)) private _operatorApprovals;
@@ -150,13 +150,13 @@ contract ERC721 is Pausable, ERC165 {
     function balanceOf(address owner) public view returns (uint256) {
         // TODO return the token balance of given address
         // TIP: remember the functions to use for Counters. you can refresh yourself with the link above
-        return ownedTokensCount[owner].current();
+        return _ownedTokensCount[owner].current();
 
     }
 
     function ownerOf(uint256 tokenId) public view returns (address) {
         // TODO return the owner of the given tokenId
-        return tokenOwner[tokenId];
+        return _tokenOwner[tokenId];
     }
 
     // @dev Approves another address to transfer the given token ID
@@ -169,16 +169,16 @@ contract ERC721 is Pausable, ERC165 {
         require(msg.sender == ownerOf(tokenId) || isApprovedForAll(ownerOf(tokenId), msg.sender), "Caller is not approved");
 
         // TODO add 'to' address to token approvals
-        tokenApprovals[tokenId] = to;
+        _tokenApprovals[tokenId] = to;
 
         // TODO emit Approval Event
-        emit Approval(msg.sender, to, tokenId);
+        emit Approval(ownerOf(tokenId), to, tokenId);
 
     }
 
     function getApproved(uint256 tokenId) public view returns (address) {
         // TODO return token approval if it exists
-        return tokenApprovals[tokenId];
+        return _tokenApprovals[tokenId];
     }
 
     /**
@@ -224,7 +224,7 @@ contract ERC721 is Pausable, ERC165 {
      * @return bool whether the token exists
      */
     function _exists(uint256 tokenId) internal view returns (bool) {
-        address owner = tokenOwner[tokenId];
+        address owner = _tokenOwner[tokenId];
         return owner != address(0);
     }
 
@@ -245,13 +245,12 @@ contract ERC721 is Pausable, ERC165 {
     function _mint(address to, uint256 tokenId) internal {
 
         // TODO revert if given tokenId already exists or given address is invalid
-        if(_exists(tokenId) || to == address(0)) {
-            revert();
-        }
+        require(_tokenOwner[tokenId] == address(0), "Token already exists");
+        require(to != address(0), "Invalid destination address");
   
         // TODO mint tokenId to given address & increase token count of owner
-        tokenOwner[tokenId] = to;
-        ownedTokensCount[to].increment();
+        _tokenOwner[tokenId] = to;
+        _ownedTokensCount[to].increment();
 
         // TODO emit Transfer event
         emit Transfer(address(0), to, tokenId);
@@ -262,8 +261,7 @@ contract ERC721 is Pausable, ERC165 {
     function _transferFrom(address from, address to, uint256 tokenId) internal {
 
         // TODO: require from address is the owner of the given token
-        address owner = ownerOf(tokenId);
-        require(from == owner, "from address is not the token owner");
+        require(from == ownerOf(tokenId), "from address is not the token owner");
 
         // TODO: require token is being transfered to valid address
         require(to != address(0), "destination address is not valid");
@@ -272,9 +270,9 @@ contract ERC721 is Pausable, ERC165 {
         _clearApproval(tokenId);
 
         // TODO: update token counts & transfer ownership of the token ID 
-        ownedTokensCount[from].decrement();
-        ownedTokensCount[to].increment();
-        tokenOwner[tokenId] = to;
+        _ownedTokensCount[from].decrement();
+        _ownedTokensCount[to].increment();
+        _tokenOwner[tokenId] = to;
 
         // TODO: emit correct event
         emit Transfer(from, to, tokenId);
@@ -302,8 +300,8 @@ contract ERC721 is Pausable, ERC165 {
 
     // @dev Private function to clear current approval of a given token ID
     function _clearApproval(uint256 tokenId) private {
-        if (tokenApprovals[tokenId] != address(0)) {
-            tokenApprovals[tokenId] = address(0);
+        if (_tokenApprovals[tokenId] != address(0)) {
+            _tokenApprovals[tokenId] = address(0);
         }
     }
 }

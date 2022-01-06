@@ -1,28 +1,33 @@
 let SquareVerifier = artifacts.require('Verifier');
 let SolnSquareVerifier = artifacts.require('SolnSquareVerifier');
-let zokratesProof = require('../../zokrates/code/proof');
+let zokratesProof = require('../../zokrates/code/proof.json');
 
 // Test if a new solution can be added for contract - SolnSquareVerifier
 
 contract('TestSolnSquareVerifier', accounts => {
-    const account_1 = accounts[0]
-    const account_2 = accounts[1]
+    const account_1 = accounts[0];
+    const account_2 = accounts[1];
+    const name = "MyMintableToken";
+    const symbol = "TKN";
 
     beforeEach(async function () {
         const squareVerifier = await SquareVerifier.new({ from: account_1 })
-        this.contract = await SolnSquareVerifier.new(squareVerifier.address, {from: account_1})
+        this.contract = await SolnSquareVerifier.new(squareVerifier.address, name, symbol, {from: account_1})
     })
 
     it('can add a new solution for SolnSquareVerifier contract', async function () {
-        let result = await this.contract.addSolution.call(1, account_2, { from: account_1 })
-        assert.equal(result.logs[0].event, 'SolutionAdded')
+        let num_before = await this.contract.getNumSolutions.call();
+        await this.contract.addSolution(1, account_2, { from: account_1 })
+        let num_after = await this.contract.getNumSolutions.call();
+        assert.equal(num_after.toNumber() - num_before.toNumber(), 1)
     })
     // Test if an ERC721 token can be minted for contract - SolnSquareVerifier
 
     it('can mint an ERC721 token for SolnSquareVerifier contract', async function () {
-        let mint = true
+        let flag = true
+        let num_before = await this.contract.getNumSolutions.call();
         try {
-            await this.contract.mintNewToken.call(
+            await this.contract.mintNewToken(
                 zokratesProof.proof.A,
                 zokratesProof.proof.A_p,
                 zokratesProof.proof.B,
@@ -31,15 +36,16 @@ contract('TestSolnSquareVerifier', accounts => {
                 zokratesProof.proof.C_p,
                 zokratesProof.proof.H,
                 zokratesProof.proof.K,
-                zokratesProof.inputs,
+                zokratesProof.input,
                 1,
                 account_2,
                 { from: account_1 }
             )
         } catch (e) {
-            mint = false
+            flag = false
         }
-
-        assert.equal(mint, true);
+        let num_after = await this.contract.getNumSolutions.call();
+        assert.equal(flag, true);
+        assert.equal(num_after.toNumber() - num_before.toNumber(), 1);
     })
 })

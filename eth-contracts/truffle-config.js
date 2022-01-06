@@ -25,10 +25,12 @@
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
+//const infuraKey = ;
 const infuraKey = "dfd9898b49fe46b189a12dc95d872c2a";
 
-mnemonic = "myth like bonus scare over problem client lizard pioneer submit female collect";
-
+///mnemonic = ;
+const mnemonic = "myth like bonus scare over problem client lizard pioneer submit female collect";
+const privateKey = "1ef252b40789d1e976c003e5d7b31c5894f0efd7df53ea1d6051f00c42fe8c0c";
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -74,11 +76,13 @@ module.exports = {
       // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     // },
     rinkeby: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
-      network_id: 4,       // rinkeby's id
-      gas: 4500000,        // rinkeby has a lower block limit than mainnet
-      gasPrice: 10000000000
+      provider: () => new HDWalletProvider(privateKey, `https://rinkeby.infura.io/v3/${infuraKey}`),
+      skipDryRun: true,
+      network_id: 4,
+      gas: 6900000,
+      gasPrice: 21000000000
     },
+    
 
     // Useful for private networks
     // private: {
@@ -103,7 +107,7 @@ module.exports = {
       //    enabled: false,
       //    runs: 200
       //  },
-      //  evmVersion: "byzantium"
+      // evmVersion: "byzantium"
       // }
     }
   }

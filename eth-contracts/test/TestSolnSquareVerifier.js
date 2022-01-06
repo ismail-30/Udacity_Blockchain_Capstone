@@ -16,16 +16,14 @@ contract('TestSolnSquareVerifier', accounts => {
     })
 
     it('can add a new solution for SolnSquareVerifier contract', async function () {
-        let num_before = await this.contract.getNumSolutions.call();
-        await this.contract.addSolution(1, account_2, { from: account_1 })
-        let num_after = await this.contract.getNumSolutions.call();
-        assert.equal(num_after.toNumber() - num_before.toNumber(), 1)
+        let tx = await this.contract.addSolution(1, account_2, { from: account_1 })
+        assert.equal(tx.logs[0].event, 'SolutionAdded')
     })
     // Test if an ERC721 token can be minted for contract - SolnSquareVerifier
 
     it('can mint an ERC721 token for SolnSquareVerifier contract', async function () {
         let flag = true
-        let num_before = await this.contract.getNumSolutions.call();
+        let num_before = await this.contract.totalSupply.call();
         try {
             await this.contract.mintNewToken(
                 zokratesProof.proof.A,
@@ -44,7 +42,7 @@ contract('TestSolnSquareVerifier', accounts => {
         } catch (e) {
             flag = false
         }
-        let num_after = await this.contract.getNumSolutions.call();
+        let num_after = await this.contract.totalSupply.call();
         assert.equal(flag, true);
         assert.equal(num_after.toNumber() - num_before.toNumber(), 1);
     })

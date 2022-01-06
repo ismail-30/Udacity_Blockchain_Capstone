@@ -20,7 +20,6 @@ contract SolnSquareVerifier is ERC721MintableComplete{
 
     // TODO define an array of the above struct
     Solution[] private solutions;
-    uint256 private numSolutions = 0;
 
     // TODO define a mapping to store unique solutions submitted
     mapping (bytes32 => Solution) solutionsMap;
@@ -52,13 +51,7 @@ contract SolnSquareVerifier is ERC721MintableComplete{
         solutions.push(newSolution);
         bytes32 key = keccak256(abi.encodePacked(_idx, _addr));
         solutionsMap[key] = newSolution;
-        numSolutions = numSolutions.add(1);
         emit SolutionAdded(_idx, _addr); 
-
-    }
-
-    function getNumSolutions() public view returns(uint256) {
-        return numSolutions;
     }
 
 

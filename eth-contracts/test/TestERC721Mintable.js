@@ -40,11 +40,11 @@ contract('TestERC721Mintable', accounts => {
         it('should return token uri', async function () { 
             
             let tokenURI_1 =baseTokenURI + "1";
-            let tokenURI_1_res = await this.contract.getTokenURI.call(1);
+            let tokenURI_1_res = await this.contract.tokenURI.call(1);
             assert.equal(tokenURI_1, tokenURI_1_res); 
             
             let tokenURI_2 =baseTokenURI + "2";
-            let tokenURI_2_res = await this.contract.getTokenURI.call(2);
+            let tokenURI_2_res = await this.contract.tokenURI.call(2);
             assert.equal(tokenURI_2, tokenURI_2_res);  
         })
 

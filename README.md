@@ -28,7 +28,7 @@ The repository contains Smart Contract code written solidity and tests using Jav
 * Generate verifier.sol ~/zokrates export-verifier
 
 ## Pass Truffle Test using local development blockchain
-
+![image](images/Pass_Truffle_Tests.png)
 
 ## Deployed contract address (Verifier) on Rinkeby Testnet
 0x2D1754ea4126293d4b6baACC7469A71bbc5420c4
@@ -38,6 +38,12 @@ The repository contains Smart Contract code written solidity and tests using Jav
 
 ## Owner address
 0x501f478159D380Fa97fC05dc8c4373BF9352Acd5
+
+## Minting 5 tokens
+Note that 5 tokens have been directlty minted upon contract deployment in 2_deploy_contracts.js migration file.
+
+## Contract ABIs
+contract ABI can be found in the following folder: eth-contracts/build/contracts
 
 ## Items listed on opensea
 https://testnets.opensea.io/collection/erc721mintabletoken-w2oefawqwa

@@ -28,6 +28,16 @@ The repository contains Smart Contract code written solidity and tests using Jav
 * Generate verifier.sol ~/zokrates export-verifier
 
 ## Pass Truffle Test using local development blockchain
+after compiling the contracts, run the following command:
+```
+truffle develop
+```
+This will create a local developement blockchain. Inside the terminal run the following command:
+
+```
+truffle test
+```
+This will recompile the contracts in case there is a change, migrate them to the local blockchain and then execute the tests. All tests have passed as shown below:
 ![image](images/Pass_Truffle_Tests.png)
 
 ## Deployed contract address (Verifier) on Rinkeby Testnet
@@ -61,6 +71,14 @@ https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/5
 * Offer was made at 0.1WETH for NFT at index 1
 * Purchase history can be seen on opensea: https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/1
 
+* The following buyer purchased the remaining 4 NFTs:
+* 0x324766a8290260881e7F2d1c6d97986D1Fc8EACF
+* Transaction histories for each items can be seen in individual opensea links:
+* https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/1
+* https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/2
+* https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/3
+* https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/4
+* https://testnets.opensea.io/assets/0xac7df8cc27e5b1a9b570e1710d2699634cc53a6f/5
 # Project Resources
 
 * [Remix - Solidity IDE](https://remix.ethereum.org/)
